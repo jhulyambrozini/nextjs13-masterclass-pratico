@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import stripe from "@/lib/stripe";
 import Stripe from "stripe"
-import { validateCartItems} from "use-shopping-cart/utilities"
+import { validateCartItems } from "use-shopping-cart/utilities"
 import { Product } from "use-shopping-cart/core";
 
-export async function POST(request: NextRequest){
+export async function POST(request: NextRequest) {
 
     const cartDetails = await request.json()
     const baseUrl = request.headers.get("origin")
 
-    const stripeInventory  = await stripe.products.list({
+    const stripeInventory = await stripe.products.list({
         expand: ["data.default_price"]
     })
 
@@ -30,14 +30,10 @@ export async function POST(request: NextRequest){
 
     const session = await stripe.checkout.sessions.create({
         mode: "payment",
-        payment_method_types: ["card"],
         line_items: line_items,
         success_url: `${baseUrl}/success/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${baseUrl}/cart` 
+        cancel_url: `${baseUrl}/cart`
     })
 
-
-
-
-    return NextResponse.json(session, { status: 200})
+    return NextResponse.json(session, { status: 200 })
 }

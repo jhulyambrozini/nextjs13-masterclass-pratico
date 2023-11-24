@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 export default function Cart() {
-  const { cartCount, cartDetails, redirectToCheckout } = useShoppingCart();
+  const { cartCount, cartDetails, redirectToCheckout, removeItem } = useShoppingCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   async function checkout() {
@@ -65,7 +65,9 @@ export default function Cart() {
                     </p>
                   </div>
                 </div>
-                <Trash2 className="text-red-400 hover:text-red-600" />
+                <button onClick={() => removeItem(cartDetails[key].id)}>
+                  <Trash2 className="text-red-400 hover:text-red-600" />
+                </button>
               </div>
             </CardContent>
           </Card>
